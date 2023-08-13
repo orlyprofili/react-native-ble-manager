@@ -16,7 +16,6 @@ import {
   NativeEventEmitter,
   Platform,
   PermissionsAndroid,
-  FlatList,
   TouchableHighlight,
   Pressable,
 } from 'react-native';
