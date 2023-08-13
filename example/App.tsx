@@ -4,6 +4,7 @@
 
 import React, {useState, useEffect} from 'react';
 import {
+  ScrollView,
   Animated,
   SafeAreaView,
   StyleSheet,
@@ -19,8 +20,7 @@ import {
   Pressable,
 } from 'react-native';
 
-import {
-  ScrollView,Colors} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const SECONDS_TO_SCAN_FOR = 7;
 const SERVICE_UUIDS: string[] = [];
@@ -251,16 +251,16 @@ const App = () => {
   }
 
   useEffect(() => {
-    try {
-      BleManager.start({showAlert: false})
-        .then(() => console.debug('BleManager started.'))
-        .catch(error =>
-          console.error('BeManager could not be started.', error),
-        );
-    } catch (error) {
-      console.error('unexpected error starting BleManager.', error);
-      return;
-    }
+    (async () => {
+      try {
+        await BleManager.start({showAlert: false});
+        console.debug('BleManager started.');
+      } catch (error) {
+        console.error('BeManager could not be started.', error);
+      }
+    })();
+  }, []);
+
 
     const listeners = [
       bleManagerEmitter.addListener(
@@ -279,64 +279,20 @@ const App = () => {
     ];
 
     handleAndroidPermissions();
+  // Cleanup function to remove event listeners
+  return () => {
+    for (const listener of listeners) {
+      listener.remove();
+    }
+  };
+}, []);  // Empty dependency array means the useEffect runs once on mount and the cleanup runs on unmount.
 
-    
-  return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        horizontal={true}
-        pagingEnabled={true}
-        showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
-      >
-        <View style={styles.screen}>
-          {/* Screen for startScan */}
-          <Pressable
-            onPress={startScan}
-            style={[styles.button, isScanning ? styles.buttonStop : styles.buttonStart]}
-          >
-            <Text style={styles.buttonText}>Start Scan</Text>
-          </Pressable>
-        </View>
-
-        <View style={styles.screen}>
-          {/* Screen for retrieveConnected */}
-          <Pressable
-            onPress={retrieveConnected}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Retrieve Connected</Text>
-          </Pressable>
-        </View>
-
-        <View style={styles.screen}>
-          {/* Screen for openSettings */}
-          <Animated.View style={{opacity: settingsButtonOpacity}}>
-            <Pressable
-              onPress={openSettings}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Open Settings</Text>
-            </Pressable>
-          </Animated.View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-
-      for (const listener of listeners) {
-        listener.remove();
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleAndroidPermissions = () => {
-    if (Platform.OS === 'android' && Platform.Version >= 31) {
-      PermissionsAndroid.requestMultiple([
-        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
-        PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
-      ]).then(result => {
+const handleAndroidPermissions = () => {
+  if (Platform.OS === 'android' && Platform.Version >= 31) {
+    PermissionsAndroid.requestMultiple([
+      PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+      PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+    ]).then(result => {
         if (result) {
           console.debug(
             '[handleAndroidPermissions] User accepts runtime permissions android 12+',
@@ -475,6 +431,24 @@ const styles = StyleSheet.create({
   },
   buttonStop: {
     backgroundColor: 'red',
+  },
+  row: {
+    padding: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  peripheralName: {
+    fontSize: 16,
+    fontWeight: 'bold'
+  },
+  rssi: {
+    fontSize: 14,
+    color: 'gray'
+  },
+  peripheralId: {
+    fontSize: 14,
+    color: 'gray'
   },
 });
 ;
