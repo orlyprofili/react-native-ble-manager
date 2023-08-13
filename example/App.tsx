@@ -482,7 +482,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
 
 
 
@@ -496,11 +495,7 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Tab.Navigator 
         initialRouteName="StartScan"
-        tabBarOptions={{
-          activeTintColor: '#e91e63',
-          labelStyle: { fontSize: 12 },
-          style: { backgroundColor: 'powderblue' },
-        }}
+        
       >
         <Tab.Screen name="StartScan" component={StartScanScreen} />
         <Tab.Screen name="RetrieveConnected" component={RetrieveConnectedScreen} />
@@ -579,3 +574,5 @@ return (
 const App = () => {
   return <AppNavigator />;
 };
+
+export default App;
