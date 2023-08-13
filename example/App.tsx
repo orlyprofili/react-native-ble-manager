@@ -52,24 +52,15 @@ const screenWidth = Dimensions.get('window').width;
 
 const RedPage: React.FC = () => {
   return (
-    <View style={{ flex: 1, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
       <Text>Hello</Text>
-    </View>
   );
 };
-
-
-
 
 const YellowPage: React.FC = () => {
   return (
-    <View style={{ flex: 1, backgroundColor: 'yellow', justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Hello</Text>
-    </View>
+      <Text>World</Text>
   );
 };
-
-
 
 const App = () => {
   const [settingsButtonOpacity] = useState(new Animated.Value(1));
@@ -420,13 +411,14 @@ const App = () => {
             )}
           </View>
 
-          {/* Yellow Page */}
-          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'yellow', justifyContent: 'center', alignItems: 'center' }}>
-            {/* ... other components of your YellowPage, if any ... */}
-          </View>
           {/* Red Page */}
           <View style={{ width: screenWidth, flex: 1, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
-            {/* ... other components of your RedPage, if any ... */}
+            <RedPage />
+          </View>
+
+          {/* Yellow Page */}
+          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'yellow', justifyContent: 'center', alignItems: 'center' }}>
+            <YellowPage />
           </View>
 
         </ScrollView>
