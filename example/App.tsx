@@ -2,7 +2,7 @@
  * Sample BLE React Native App
  */
 
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ScrollView,
   Animated,
@@ -21,7 +21,7 @@ import {
   Pressable,
 } from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const SECONDS_TO_SCAN_FOR = 7;
 const SERVICE_UUIDS: string[] = [];
@@ -49,17 +49,27 @@ declare module 'react-native-ble-manager' {
 // Get the width of the screen
 const screenWidth = Dimensions.get('window').width;
 
+
 const RedPage: React.FC = () => {
   return (
-    <View style={{flex: 1, backgroundColor: 'red'}}></View>
+    <View style={{ flex: 1, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Hello</Text>
+    </View>
   );
 };
 
+
+
+
 const YellowPage: React.FC = () => {
   return (
-    <View style={{flex: 1, backgroundColor: 'yellow'}}></View>
+    <View style={{ flex: 1, backgroundColor: 'yellow', justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Hello</Text>
+    </View>
   );
 };
+
+
 
 const App = () => {
   const [settingsButtonOpacity] = useState(new Animated.Value(1));
@@ -131,7 +141,7 @@ const App = () => {
         `[handleDisconnectedPeripheral][${peripheral.id}] previously connected peripheral is disconnected.`,
         event.peripheral,
       );
-      addOrUpdatePeripheral(peripheral.id, {...peripheral, connected: false});
+      addOrUpdatePeripheral(peripheral.id, { ...peripheral, connected: false });
     }
     console.debug(
       `[handleDisconnectedPeripheral][${event.peripheral}] disconnected.`,
@@ -184,7 +194,7 @@ const App = () => {
 
       for (var i = 0; i < connectedPeripherals.length; i++) {
         var peripheral = connectedPeripherals[i];
-        addOrUpdatePeripheral(peripheral.id, {...peripheral, connected: true});
+        addOrUpdatePeripheral(peripheral.id, { ...peripheral, connected: true });
       }
     } catch (error) {
       console.error(
@@ -197,7 +207,7 @@ const App = () => {
   const connectPeripheral = async (peripheral: Peripheral) => {
     try {
       if (peripheral) {
-        addOrUpdatePeripheral(peripheral.id, {...peripheral, connecting: true});
+        addOrUpdatePeripheral(peripheral.id, { ...peripheral, connecting: true });
 
         await BleManager.connect(peripheral.id);
         console.debug(`[connectPeripheral][${peripheral.id}] connected.`);
@@ -251,7 +261,7 @@ const App = () => {
 
         let p = peripherals.get(peripheral.id);
         if (p) {
-          addOrUpdatePeripheral(peripheral.id, {...peripheral, rssi});
+          addOrUpdatePeripheral(peripheral.id, { ...peripheral, rssi });
         }
       }
     } catch (error) {
@@ -268,7 +278,7 @@ const App = () => {
 
   useEffect(() => {
     try {
-      BleManager.start({showAlert: false})
+      BleManager.start({ showAlert: false })
         .then(() => console.debug('BleManager started.'))
         .catch(error =>
           console.error('BeManager could not be started.', error),
@@ -348,13 +358,13 @@ const App = () => {
     }
   };
 
-  const renderItem = ({item}: {item: Peripheral}) => {
+  const renderItem = ({ item }: { item: Peripheral }) => {
     const backgroundColor = item.connected ? '#069400' : Colors.white;
     return (
       <TouchableHighlight
         underlayColor="#0082FC"
         onPress={() => togglePeripheralConnection(item)}>
-        <View style={[styles.row, {backgroundColor}]}>
+        <View style={[styles.row, { backgroundColor }]}>
           <Text style={styles.peripheralName}>
             {/* completeLocalName (item.name) & shortAdvertisingName (advertising.localName) may not always be the same */}
             {item.name} - {item?.advertising?.localName}
@@ -369,66 +379,58 @@ const App = () => {
 
   return (
     <>
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar
-        barStyle="dark-content"
-      // ... any other StatusBar props you want ...
-      />
-
-      <ScrollView
-        horizontal={true}
-        pagingEnabled={true}
-        showsHorizontalScrollIndicator={false}
-        style={{ flex: 1 }} // Ensure the ScrollView takes full height
-      >
-        <FlatList
-          data={Array.from(peripherals.values())}
-          contentContainerStyle={{ rowGap: 12 }}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar
+          barStyle="dark-content"
+        // ... any other StatusBar props you want ...
         />
+
+        <ScrollView
+          horizontal={true}
+          pagingEnabled={true}
+          showsHorizontalScrollIndicator={false}
+        >
           {/* Main Screen */}
           <View style={{ width: screenWidth, flex: 1 }}>
-  
-          <Pressable style={styles.scanButton} onPress={startScan}>
-            <Text style={styles.scanButtonText}>
-              {isScanning ? 'Scanning...' : 'Scan Bluetooth'}
-            </Text>
-          </Pressable>
-  
-          <Pressable style={styles.scanButton} onPress={retrieveConnected}>
-            <Text style={styles.scanButtonText}>
-              {'Retrieve connected peripherals'}
-            </Text>
-          </Pressable>
-  
-          <Animated.View style={{ opacity: settingsButtonOpacity }}>
-            <Pressable style={styles.scanButton} onPress={openSettings}>
-              <Text style={styles.scanButtonText}>Settings</Text>
-            </Pressable>
-          </Animated.View>
-  
-          {Array.from(peripherals.values()).length === 0 && (
-            <View style={styles.row}>
-              <Text style={styles.noPeripherals}>
-                No Peripherals, press "Scan Bluetooth" above.
+
+            <Pressable style={styles.scanButton} onPress={startScan}>
+              <Text style={styles.scanButtonText}>
+                {isScanning ? 'Scanning...' : 'Scan Bluetooth'}
               </Text>
-            </View>
-          )}
+            </Pressable>
+
+            <Pressable style={styles.scanButton} onPress={retrieveConnected}>
+              <Text style={styles.scanButtonText}>
+                {'Retrieve connected peripherals'}
+              </Text>
+            </Pressable>
+
+            <Animated.View style={{ opacity: settingsButtonOpacity }}>
+              <Pressable style={styles.scanButton} onPress={openSettings}>
+                <Text style={styles.scanButtonText}>Settings</Text>
+              </Pressable>
+            </Animated.View>
+
+            {Array.from(peripherals.values()).length === 0 && (
+              <View style={styles.row}>
+                <Text style={styles.noPeripherals}>
+                  No Peripherals, press "Scan Bluetooth" above.
+                </Text>
+              </View>
+            )}
+          </View>
 
           {/* Yellow Page */}
-          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'yellow' }}>
+          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'yellow', justifyContent: 'center', alignItems: 'center' }}>
             {/* ... other components of your YellowPage, if any ... */}
           </View>
-
           {/* Red Page */}
-          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'red' }}>
+          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
             {/* ... other components of your RedPage, if any ... */}
           </View>
-          
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+
+        </ScrollView>
+      </SafeAreaView>
     </>
   );
 };
