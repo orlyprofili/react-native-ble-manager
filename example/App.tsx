@@ -262,30 +262,26 @@ const App = () => {
   }, []);
 
 
-    const listeners = [
-      bleManagerEmitter.addListener(
-        'BleManagerDiscoverPeripheral',
-        handleDiscoverPeripheral,
-      ),
-      bleManagerEmitter.addListener('BleManagerStopScan', handleStopScan),
-      bleManagerEmitter.addListener(
-        'BleManagerDisconnectPeripheral',
-        handleDisconnectedPeripheral,
-      ),
-      bleManagerEmitter.addListener(
-        'BleManagerDidUpdateValueForCharacteristic',
-        handleUpdateValueForCharacteristic,
-      ),
-    ];
+  bleManagerEmitter.addListener('BleManagerStopScan', handleStopScan);
+  bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', handleDisconnectedPeripheral);
+  bleManagerEmitter.addListener('BleManagerDidUpdateValueForCharacteristic', handleUpdateValueForCharacteristic);
+  const listeners: EventSubscription[] = [
+    //handleStartScan,
+    handleStopScan,
+    handleDisconnectedPeripheral,
+    handleUpdateValueForCharacteristic
+  ];
 
-    handleAndroidPermissions();
+  handleAndroidPermissions();
   // Cleanup function to remove event listeners
   return () => {
     for (const listener of listeners) {
       listener.remove();
     }
   };
-}, []);  // Empty dependency array means the useEffect runs once on mount and the cleanup runs on unmount.
+
+
+};//, []);  // Empty dependency array means the useEffect runs once on mount and the cleanup runs on unmount.
 
 const handleAndroidPermissions = () => {
   if (Platform.OS === 'android' && Platform.Version >= 31) {
@@ -451,7 +447,6 @@ const styles = StyleSheet.create({
     color: 'gray'
   },
 });
-;
 
 export default App;
 
