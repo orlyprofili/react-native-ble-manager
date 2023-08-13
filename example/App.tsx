@@ -4,6 +4,7 @@
 
 import React, {useState, useEffect} from 'react';
 import {
+  Animated,
   SafeAreaView,
   StyleSheet,
   View,
@@ -44,12 +45,29 @@ declare module 'react-native-ble-manager' {
 }
 
 const App = () => {
+  const [settingsButtonOpacity] = useState(new Animated.Value(1));
   const [isScanning, setIsScanning] = useState(false);
   const [peripherals, setPeripherals] = useState(
     new Map<Peripheral['id'], Peripheral>(),
   );
 
   console.debug('peripherals map updated', [...peripherals.entries()]);
+
+  const openSettings = () => {
+    Animated.sequence([
+      Animated.timing(settingsButtonOpacity, {
+        toValue: 0.5,
+        duration: 100,
+        useNativeDriver: true
+      }),
+      Animated.timing(settingsButtonOpacity, {
+        toValue: 1,
+        duration: 100,
+        useNativeDriver: true
+      })
+    ]).start();
+    // TODO: Insert code to open settings or perform any other action
+  };
 
   const addOrUpdatePeripheral = (id: string, updatedPeripheral: Peripheral) => {
     // new Map() enables changing the reference & refreshing UI.
@@ -347,6 +365,12 @@ const App = () => {
             {'Retrieve connected peripherals'}
           </Text>
         </Pressable>
+
+        <Animated.View style={{ opacity: settingsButtonOpacity }}>
+          <Pressable style={styles.scanButton} onPress={openSettings}>
+            <Text style={styles.scanButtonText}>Settings</Text>
+          </Pressable>
+        </Animated.View>
 
         {Array.from(peripherals.values()).length === 0 && (
           <View style={styles.row}>
