@@ -11,6 +11,7 @@ import {
   View,
   Text,
   StatusBar,
+  Dimensions,
   NativeModules,
   NativeEventEmitter,
   Platform,
@@ -45,6 +46,8 @@ declare module 'react-native-ble-manager' {
   }
 }
 
+// Get the width of the screen
+const screenWidth = Dimensions.get('window').width;
 
 const RedPage: React.FC = () => {
   return (
@@ -57,6 +60,7 @@ const YellowPage: React.FC = () => {
     <View style={{flex: 1, backgroundColor: 'yellow'}}></View>
   );
 };
+
 const App = () => {
   const [settingsButtonOpacity] = useState(new Animated.Value(1));
   const [isScanning, setIsScanning] = useState(false);
@@ -365,41 +369,66 @@ const App = () => {
 
   return (
     <>
-      <StatusBar />
-      <SafeAreaView style={styles.body}>
-        <Pressable style={styles.scanButton} onPress={startScan}>
-          <Text style={styles.scanButtonText}>
-            {isScanning ? 'Scanning...' : 'Scan Bluetooth'}
-          </Text>
-        </Pressable>
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar
+        barStyle="dark-content"
+      // ... any other StatusBar props you want ...
+      />
 
-        <Pressable style={styles.scanButton} onPress={retrieveConnected}>
-          <Text style={styles.scanButtonText}>
-            {'Retrieve connected peripherals'}
-          </Text>
-        </Pressable>
-
-        <Animated.View style={{ opacity: settingsButtonOpacity }}>
-          <Pressable style={styles.scanButton} onPress={openSettings}>
-            <Text style={styles.scanButtonText}>Settings</Text>
-          </Pressable>
-        </Animated.View>
-
-        {Array.from(peripherals.values()).length === 0 && (
-          <View style={styles.row}>
-            <Text style={styles.noPeripherals}>
-              No Peripherals, press "Scan Bluetooth" above.
-            </Text>
-          </View>
-        )}
-
+      <ScrollView
+        horizontal={true}
+        pagingEnabled={true}
+        showsHorizontalScrollIndicator={false}
+        style={{ flex: 1 }} // Ensure the ScrollView takes full height
+      >
         <FlatList
           data={Array.from(peripherals.values())}
-          contentContainerStyle={{rowGap: 12}}
+          contentContainerStyle={{ rowGap: 12 }}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
-      </SafeAreaView>
+          {/* Main Screen */}
+          <View style={{ width: screenWidth, flex: 1 }}>
+  
+          <Pressable style={styles.scanButton} onPress={startScan}>
+            <Text style={styles.scanButtonText}>
+              {isScanning ? 'Scanning...' : 'Scan Bluetooth'}
+            </Text>
+          </Pressable>
+  
+          <Pressable style={styles.scanButton} onPress={retrieveConnected}>
+            <Text style={styles.scanButtonText}>
+              {'Retrieve connected peripherals'}
+            </Text>
+          </Pressable>
+  
+          <Animated.View style={{ opacity: settingsButtonOpacity }}>
+            <Pressable style={styles.scanButton} onPress={openSettings}>
+              <Text style={styles.scanButtonText}>Settings</Text>
+            </Pressable>
+          </Animated.View>
+  
+          {Array.from(peripherals.values()).length === 0 && (
+            <View style={styles.row}>
+              <Text style={styles.noPeripherals}>
+                No Peripherals, press "Scan Bluetooth" above.
+              </Text>
+            </View>
+          )}
+
+          {/* Yellow Page */}
+          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'yellow' }}>
+            {/* ... other components of your YellowPage, if any ... */}
+          </View>
+
+          {/* Red Page */}
+          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'red' }}>
+            {/* ... other components of your RedPage, if any ... */}
+          </View>
+          
+        </View>
+      </ScrollView>
+    </SafeAreaView>
     </>
   );
 };
