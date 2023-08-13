@@ -4,6 +4,7 @@
 
 import React, {useState, useEffect} from 'react';
 import {
+  ScrollView,
   Animated,
   SafeAreaView,
   StyleSheet,
@@ -19,7 +20,8 @@ import {
   Pressable,
 } from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {
+  ScrollView,Colors} from 'react-native/Libraries/NewAppScreen';
 
 const SECONDS_TO_SCAN_FOR = 7;
 const SERVICE_UUIDS: string[] = [];
@@ -44,7 +46,7 @@ declare module 'react-native-ble-manager' {
   }
 }
 
-
+const App = () => {
   const [settingsButtonOpacity] = useState(new Animated.Value(1));
   const [isScanning, setIsScanning] = useState(false);
   const [peripherals, setPeripherals] = useState(
@@ -279,8 +281,50 @@ declare module 'react-native-ble-manager' {
 
     handleAndroidPermissions();
 
-    return () => {
-      console.debug('[app] main component unmounting. Removing listeners...');
+    
+  return (
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        horizontal={true}
+        pagingEnabled={true}
+        showsHorizontalScrollIndicator={false}
+        style={styles.scrollView}
+      >
+        <View style={styles.screen}>
+          {/* Screen for startScan */}
+          <Pressable
+            onPress={startScan}
+            style={[styles.button, isScanning ? styles.buttonStop : styles.buttonStart]}
+          >
+            <Text style={styles.buttonText}>Start Scan</Text>
+          </Pressable>
+        </View>
+
+        <View style={styles.screen}>
+          {/* Screen for retrieveConnected */}
+          <Pressable
+            onPress={retrieveConnected}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Retrieve Connected</Text>
+          </Pressable>
+        </View>
+
+        <View style={styles.screen}>
+          {/* Screen for openSettings */}
+          <Animated.View style={{opacity: settingsButtonOpacity}}>
+            <Pressable
+              onPress={openSettings}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Open Settings</Text>
+            </Pressable>
+          </Animated.View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+
       for (const listener of listeners) {
         listener.remove();
       }
@@ -402,177 +446,39 @@ const boxShadow = {
   elevation: 5,
 };
 
+
 const styles = StyleSheet.create({
-  engine: {
-    position: 'absolute',
-    right: 10,
-    bottom: 0,
-    color: Colors.black,
-  },
-  scanButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 16,
-    backgroundColor: '#0a398a',
-    margin: 10,
-    borderRadius: 12,
-    ...boxShadow,
-  },
-  scanButtonText: {
-    fontSize: 20,
-    letterSpacing: 0.25,
-    color: Colors.white,
-  },
-  body: {
-    backgroundColor: '#0082FC',
+  container: {
     flex: 1,
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  scrollView: {
+    flex: 1,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
+  screen: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
+  button: {
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: 'blue',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-  peripheralName: {
+  buttonText: {
+    color: 'white',
     fontSize: 16,
-    textAlign: 'center',
-    padding: 10,
   },
-  rssi: {
-    fontSize: 12,
-    textAlign: 'center',
-    padding: 2,
+  buttonStart: {
+    backgroundColor: 'green',
   },
-  peripheralId: {
-    fontSize: 12,
-    textAlign: 'center',
-    padding: 2,
-    paddingBottom: 20,
-  },
-  row: {
-    marginLeft: 10,
-    marginRight: 10,
-    borderRadius: 20,
-    ...boxShadow,
-  },
-  noPeripherals: {
-    margin: 10,
-    textAlign: 'center',
-    color: Colors.white,
+  buttonStop: {
+    backgroundColor: 'red',
   },
 });
-
-
-
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
-const Tab = createMaterialTopTabNavigator();
-
-const AppNavigator = () => {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator 
-        initialRouteName="StartScan"
-        
-      >
-        <Tab.Screen name="StartScan" component={StartScanScreen} />
-        <Tab.Screen name="RetrieveConnected" component={RetrieveConnectedScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
-};
-
-
-  // Extract related state and methods from the current App component
-  
-  return (
-    // Return the related GUI for starting scan
-  );
-};
-
-
-  // Extract related state and methods from the current App component
-  
-  return (
-    // Return the related GUI for retrieving connected devices
-  );
-};
-
-
-  // Extract related state and methods from the current App component
-  
-  return (
-    // Return the related GUI for settings (animation)
-  );
-};
-
-const StartScanScreen = () => {
-  // Extract related state and methods from the current App component
-  
-  return (
-    
-return (
-  <SafeAreaView style={styles.container}>
-    <View><Text>Placeholder Content</Text></View>
-  </SafeAreaView>
-);
-
-  );
-};
-
-const RetrieveConnectedScreen = () => {
-  // Extract related state and methods from the current App component
-  
-  return (
-    
-return (
-  <SafeAreaView style={styles.container}>
-    <View><Text>Placeholder Content</Text></View>
-  </SafeAreaView>
-);
-
-  );
-};
-
-const SettingsScreen = () => {
-  // Extract related state and methods from the current App component
-  
-  return (
-    
-return (
-  <SafeAreaView style={styles.container}>
-    <View><Text>Placeholder Content</Text></View>
-  </SafeAreaView>
-);
-
-  );
-};
-
-const App = () => {
-  return <AppNavigator />;
-};
+;
 
 export default App;
+
