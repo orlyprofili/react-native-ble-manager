@@ -44,7 +44,7 @@ declare module 'react-native-ble-manager' {
   }
 }
 
-const App = () => {
+
   const [settingsButtonOpacity] = useState(new Animated.Value(1));
   const [isScanning, setIsScanning] = useState(false);
   const [peripherals, setPeripherals] = useState(
@@ -484,3 +484,98 @@ const styles = StyleSheet.create({
 
 export default App;
 
+
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+const Tab = createMaterialTopTabNavigator();
+
+const AppNavigator = () => {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator 
+        initialRouteName="StartScan"
+        tabBarOptions={{
+          activeTintColor: '#e91e63',
+          labelStyle: { fontSize: 12 },
+          style: { backgroundColor: 'powderblue' },
+        }}
+      >
+        <Tab.Screen name="StartScan" component={StartScanScreen} />
+        <Tab.Screen name="RetrieveConnected" component={RetrieveConnectedScreen} />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+};
+
+
+  // Extract related state and methods from the current App component
+  
+  return (
+    // Return the related GUI for starting scan
+  );
+};
+
+
+  // Extract related state and methods from the current App component
+  
+  return (
+    // Return the related GUI for retrieving connected devices
+  );
+};
+
+
+  // Extract related state and methods from the current App component
+  
+  return (
+    // Return the related GUI for settings (animation)
+  );
+};
+
+const StartScanScreen = () => {
+  // Extract related state and methods from the current App component
+  
+  return (
+    
+return (
+  <SafeAreaView style={styles.container}>
+    <View><Text>Placeholder Content</Text></View>
+  </SafeAreaView>
+);
+
+  );
+};
+
+const RetrieveConnectedScreen = () => {
+  // Extract related state and methods from the current App component
+  
+  return (
+    
+return (
+  <SafeAreaView style={styles.container}>
+    <View><Text>Placeholder Content</Text></View>
+  </SafeAreaView>
+);
+
+  );
+};
+
+const SettingsScreen = () => {
+  // Extract related state and methods from the current App component
+  
+  return (
+    
+return (
+  <SafeAreaView style={styles.container}>
+    <View><Text>Placeholder Content</Text></View>
+  </SafeAreaView>
+);
+
+  );
+};
+
+const App = () => {
+  return <AppNavigator />;
+};
