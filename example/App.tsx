@@ -4,6 +4,7 @@
 
 import React, {useState, useEffect} from 'react';
 import {
+  ScrollView,
   Animated,
   SafeAreaView,
   StyleSheet,
@@ -291,21 +292,13 @@ const App = () => {
 
     handleAndroidPermissions();
 
-    return 
-<ScrollView horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
-  <View style={{flex: 1}}>
-    { /* Existing App content goes here */ }
-  </View>
-  <RedPage />
-  <YellowPage />
-</ScrollView>
-() => {
+    // Cleanup function
+    return () => {
       console.debug('[app] main component unmounting. Removing listeners...');
       for (const listener of listeners) {
         listener.remove();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAndroidPermissions = () => {
