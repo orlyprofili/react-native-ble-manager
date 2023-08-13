@@ -44,6 +44,18 @@ declare module 'react-native-ble-manager' {
   }
 }
 
+
+const RedPage: React.FC = () => {
+  return (
+    <View style={{flex: 1, backgroundColor: 'red'}}></View>
+  );
+};
+
+const YellowPage: React.FC = () => {
+  return (
+    <View style={{flex: 1, backgroundColor: 'yellow'}}></View>
+  );
+};
 const App = () => {
   const [settingsButtonOpacity] = useState(new Animated.Value(1));
   const [isScanning, setIsScanning] = useState(false);
@@ -279,7 +291,15 @@ const App = () => {
 
     handleAndroidPermissions();
 
-    return () => {
+    return 
+<ScrollView horizontal={true} pagingEnabled={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
+  <View style={{flex: 1}}>
+    { /* Existing App content goes here */ }
+  </View>
+  <RedPage />
+  <YellowPage />
+</ScrollView>
+() => {
       console.debug('[app] main component unmounting. Removing listeners...');
       for (const listener of listeners) {
         listener.remove();
