@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 
 
-const TransduceHeader = () => {
+const AppHeader = () => {
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
 
   useEffect(() => {
@@ -418,7 +418,7 @@ const App = () => {
 
   return (
     <>
-      <TransduceHeader />
+      <AppHeader />
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar
           barStyle="dark-content"
