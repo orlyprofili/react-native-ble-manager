@@ -35,30 +35,37 @@ const TransduceHeader = () => {
   }, []);
 
   return (
-    <View style={headerStyles.header}>
-      <Text style={headerStyles.headerText}>Transduce</Text>
-      <Text style={headerStyles.timeText}>{currentTime}</Text>
-    </View>
+    <SafeAreaView style={{ backgroundColor: 'black' }}>
+      <View style={headerStyles.header}>
+        <Text style={headerStyles.headerText}>Transduce and Beautify</Text>
+        <Text style={headerStyles.timeText}>{currentTime}</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const headerStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: 'space-between', // Restore the space-between layout
+    alignItems: 'center',            // Ensures vertical alignment
     backgroundColor: 'black',
     padding: 10,
+    paddingTop: Platform.OS === 'android' ? 10 : 40,
     width: '100%',
   },
   headerText: {
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
+    flex: 1,                       // Take up as much horizontal space as possible
+    textAlign: 'center'            // Centers the text
   },
   timeText: {
     color: 'white',
     fontSize: 16,
+    textAlign: 'right',            // Centers the text
+    paddingRight: 10                // Padding to separate time from the right edge
   },
 });
 
@@ -438,12 +445,6 @@ const App = () => {
               </Text>
             </Pressable>
 
-            <Animated.View style={{ opacity: settingsButtonOpacity }}>
-              <Pressable style={styles.scanButton} onPress={openSettings}>
-                <Text style={styles.scanButtonText}>Settings</Text>
-              </Pressable>
-            </Animated.View>
-
             {Array.from(peripherals.values()).length === 0 && (
               <View style={styles.row}>
                 <Text style={styles.noPeripherals}>
@@ -453,15 +454,21 @@ const App = () => {
             )}
           </View>
 
-          {/* Red Page */}
-          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
-            <RedPage />
-          </View>
-
           {/* Yellow Page */}
           <View style={{ width: screenWidth, flex: 1, backgroundColor: 'yellow', justifyContent: 'center', alignItems: 'center' }}>
             <YellowPage />
           </View>
+
+          {/* Red Page */}
+          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
+            <Animated.View style={{ opacity: settingsButtonOpacity }}>
+              <Pressable style={styles.scanButton} onPress={openSettings}>
+                <Text style={styles.scanButtonText}>Settings</Text>
+              </Pressable>
+            </Animated.View>
+            <RedPage />
+          </View>
+
 
         </ScrollView>
       </SafeAreaView>
