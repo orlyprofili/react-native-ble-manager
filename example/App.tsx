@@ -2,9 +2,11 @@
  * Sample BLE React Native App
  */
 
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ScrollView,
+  ImageBackground,
+  Image,
   Animated,
   SafeAreaView,
   StyleSheet,
@@ -21,9 +23,10 @@ import {
   FlatList,
 } from 'react-native';
 
-
 const AppHeader = () => {
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+  const [currentTime, setCurrentTime] = useState(
+    new Date().toLocaleTimeString(),
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,7 +39,7 @@ const AppHeader = () => {
   }, []);
 
   return (
-    <SafeAreaView style={{ backgroundColor: 'black' }}>
+    <SafeAreaView style={{backgroundColor: 'black'}}>
       <View style={headerStyles.header}>
         <Text style={headerStyles.headerText}>Transduce and Beautify</Text>
         <Text style={headerStyles.timeText}>{currentTime}</Text>
@@ -49,7 +52,7 @@ const headerStyles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between', // Restore the space-between layout
-    alignItems: 'center',            // Ensures vertical alignment
+    alignItems: 'center', // Ensures vertical alignment
     backgroundColor: 'black',
     padding: 10,
     paddingTop: Platform.OS === 'android' ? 10 : 40,
@@ -59,18 +62,18 @@ const headerStyles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     fontWeight: 'bold',
-    flex: 1,                       // Take up as much horizontal space as possible
-    textAlign: 'center'            // Centers the text
+    flex: 1, // Take up as much horizontal space as possible
+    textAlign: 'center', // Centers the text
   },
   timeText: {
     color: 'white',
     fontSize: 16,
-    textAlign: 'right',            // Centers the text
-    paddingRight: 10                // Padding to separate time from the right edge
+    textAlign: 'right', // Centers the text
+    paddingRight: 10, // Padding to separate time from the right edge
   },
 });
 
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const SECONDS_TO_SCAN_FOR = 7;
 const SERVICE_UUIDS: string[] = [];
@@ -98,17 +101,12 @@ declare module 'react-native-ble-manager' {
 // Get the width of the screen
 const screenWidth = Dimensions.get('window').width;
 
-
 const RedPage: React.FC = () => {
-  return (
-    <Text>Hello</Text>
-  );
+  return <Text>Hello</Text>;
 };
 
 const YellowPage: React.FC = () => {
-  return (
-    <Text>World</Text>
-  );
+  return <Text>World</Text>;
 };
 
 const App = () => {
@@ -125,13 +123,13 @@ const App = () => {
       Animated.timing(settingsButtonOpacity, {
         toValue: 0.5,
         duration: 100,
-        useNativeDriver: true
+        useNativeDriver: true,
       }),
       Animated.timing(settingsButtonOpacity, {
         toValue: 1,
         duration: 100,
-        useNativeDriver: true
-      })
+        useNativeDriver: true,
+      }),
     ]).start();
     // TODO: Insert code to open settings or perform any other action
   };
@@ -181,7 +179,7 @@ const App = () => {
         `[handleDisconnectedPeripheral][${peripheral.id}] previously connected peripheral is disconnected.`,
         event.peripheral,
       );
-      addOrUpdatePeripheral(peripheral.id, { ...peripheral, connected: false });
+      addOrUpdatePeripheral(peripheral.id, {...peripheral, connected: false});
     }
     console.debug(
       `[handleDisconnectedPeripheral][${event.peripheral}] disconnected.`,
@@ -234,7 +232,7 @@ const App = () => {
 
       for (var i = 0; i < connectedPeripherals.length; i++) {
         var peripheral = connectedPeripherals[i];
-        addOrUpdatePeripheral(peripheral.id, { ...peripheral, connected: true });
+        addOrUpdatePeripheral(peripheral.id, {...peripheral, connected: true});
       }
     } catch (error) {
       console.error(
@@ -247,7 +245,7 @@ const App = () => {
   const connectPeripheral = async (peripheral: Peripheral) => {
     try {
       if (peripheral) {
-        addOrUpdatePeripheral(peripheral.id, { ...peripheral, connecting: true });
+        addOrUpdatePeripheral(peripheral.id, {...peripheral, connecting: true});
 
         await BleManager.connect(peripheral.id);
         console.debug(`[connectPeripheral][${peripheral.id}] connected.`);
@@ -301,7 +299,7 @@ const App = () => {
 
         let p = peripherals.get(peripheral.id);
         if (p) {
-          addOrUpdatePeripheral(peripheral.id, { ...peripheral, rssi });
+          addOrUpdatePeripheral(peripheral.id, {...peripheral, rssi});
         }
       }
     } catch (error) {
@@ -318,7 +316,7 @@ const App = () => {
 
   useEffect(() => {
     try {
-      BleManager.start({ showAlert: false })
+      BleManager.start({showAlert: false})
         .then(() => console.debug('BleManager started.'))
         .catch(error =>
           console.error('BeManager could not be started.', error),
@@ -398,13 +396,13 @@ const App = () => {
     }
   };
 
-  const renderItem = ({ item }: { item: Peripheral }) => {
+  const renderItem = ({item}: {item: Peripheral}) => {
     const backgroundColor = item.connected ? '#069400' : Colors.white;
     return (
       <TouchableHighlight
         underlayColor="#0082FC"
         onPress={() => togglePeripheralConnection(item)}>
-        <View style={[styles.row, { backgroundColor }]}>
+        <View style={[styles.row, {backgroundColor}]}>
           <Text style={styles.peripheralName}>
             {/* completeLocalName (item.name) & shortAdvertisingName (advertising.localName) may not always be the same */}
             {item.name} - {item?.advertising?.localName}
@@ -420,35 +418,27 @@ const App = () => {
   return (
     <>
       <AppHeader />
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{flex: 1}}>
         <StatusBar
           barStyle="dark-content"
-        // ... any other StatusBar props you want ...
+          // ... any other StatusBar props you want ...
         />
 
         <ScrollView
           horizontal={true}
           pagingEnabled={true}
-          showsHorizontalScrollIndicator={false}
-        >
+          showsHorizontalScrollIndicator={false}>
           {/* Main Screen */}
-          <View style={{ width: screenWidth, flex: 1 }}>
-
+          <View style={{width: screenWidth, flex: 1}}>
             <Pressable style={styles.scanButton} onPress={startScan}>
               <Text style={styles.scanButtonText}>
                 {isScanning ? 'Scanning...' : 'Scan Bluetooth'}
               </Text>
             </Pressable>
 
-            <Pressable style={styles.scanButton} onPress={retrieveConnected}>
-              <Text style={styles.scanButtonText}>
-                {'Retrieve connected peripherals'}
-              </Text>
-            </Pressable>
-
             <FlatList
               data={Array.from(peripherals.values())}
-              contentContainerStyle={{ rowGap: 12 }}
+              contentContainerStyle={{rowGap: 12}}
               renderItem={renderItem}
               keyExtractor={item => item.id}
             />
@@ -463,21 +453,32 @@ const App = () => {
           </View>
 
           {/* Yellow Page */}
-          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'yellow', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{width: screenWidth, flex: 1, justifyContent: 'center'}}>
+            <ImageBackground
+              source={require('./assets/IMG_0034.jpeg')}
+              style={{flex: 1}}>
+              <Pressable style={styles.scanButton} onPress={retrieveConnected}>
+                <Text style={styles.scanButtonText}>
+                  {'Retrieve connected peripherals'}
+                </Text>
+              </Pressable>
+            </ImageBackground>
             <YellowPage />
           </View>
 
           {/* Red Page */}
-          <View style={{ width: screenWidth, flex: 1, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
-            <Animated.View style={{ opacity: settingsButtonOpacity }}>
-              <Pressable style={styles.scanButton} onPress={openSettings}>
-                <Text style={styles.scanButtonText}>Settings</Text>
-              </Pressable>
-            </Animated.View>
+          <View style={{width: screenWidth, flex: 1, justifyContent: 'center'}}>
+            <ImageBackground
+              source={require('./assets/IMG_0034.jpeg')}
+              style={{flex: 1}}>
+              <Animated.View style={{opacity: settingsButtonOpacity}}>
+                <Pressable style={styles.scanButton} onPress={openSettings}>
+                  <Text style={styles.scanButtonText}>Settings</Text>
+                </Pressable>
+              </Animated.View>
+            </ImageBackground>
             <RedPage />
           </View>
-
-
         </ScrollView>
       </SafeAreaView>
     </>
@@ -576,4 +577,3 @@ const styles = StyleSheet.create({
 });
 
 export default App;
-
