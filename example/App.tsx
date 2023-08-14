@@ -77,7 +77,8 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const SECONDS_TO_SCAN_FOR = 7;
 const SERVICE_UUIDS: string[] = [];
-const ALLOW_DUPLICATES = true;
+//TODO: more responsive when scanning, but may make establishing connection less reliable
+const ALLOW_DUPLICATES = false;
 
 import BleManager, {
   BleDisconnectPeripheralEvent,
@@ -138,6 +139,25 @@ const App = () => {
     // new Map() enables changing the reference & refreshing UI.
     // TOFIX not efficient.
     setPeripherals(map => new Map(map.set(id, updatedPeripheral)));
+  };
+
+  const toggleScan = async () => {
+    console.log('toggleScan');
+    if (isScanning) {
+      try {
+        await BleManager.stopScan();
+        console.log('Scan stopped successfully');
+        handleStopScan();
+      } catch (error) {
+        console.error('Error stopping the scan:', error);
+      }
+    } else {
+      try {
+        startScan();
+      } catch (error) {
+        console.error('Error starting the scan:', error);
+      }
+    }
   };
 
   const startScan = () => {
@@ -430,7 +450,7 @@ const App = () => {
           showsHorizontalScrollIndicator={false}>
           {/* Main Screen */}
           <View style={{width: screenWidth, flex: 1}}>
-            <Pressable style={styles.scanButton} onPress={startScan}>
+            <Pressable style={styles.scanButton} onPress={toggleScan}>
               <Text style={styles.scanButtonText}>
                 {isScanning ? 'Scanning...' : 'Scan Bluetooth'}
               </Text>
