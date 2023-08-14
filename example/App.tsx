@@ -20,6 +20,48 @@ import {
   Pressable,
 } from 'react-native';
 
+
+const TransduceHeader = () => {
+  const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return (
+    <View style={headerStyles.header}>
+      <Text style={headerStyles.headerText}>Transduce</Text>
+      <Text style={headerStyles.timeText}>{currentTime}</Text>
+    </View>
+  );
+};
+
+const headerStyles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'black',
+    padding: 10,
+    width: '100%',
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  timeText: {
+    color: 'white',
+    fontSize: 16,
+  },
+});
+
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const SECONDS_TO_SCAN_FOR = 7;
@@ -51,13 +93,13 @@ const screenWidth = Dimensions.get('window').width;
 
 const RedPage: React.FC = () => {
   return (
-      <Text>Hello</Text>
+    <Text>Hello</Text>
   );
 };
 
 const YellowPage: React.FC = () => {
   return (
-      <Text>World</Text>
+    <Text>World</Text>
   );
 };
 
@@ -369,6 +411,7 @@ const App = () => {
 
   return (
     <>
+      <TransduceHeader />
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar
           barStyle="dark-content"

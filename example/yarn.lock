@@ -5757,6 +5757,10 @@ react-is@^17.0.1:
 "react-native-ble-manager@file:..":
   version "10.1.3"
   resolved "file:.."
+  dependencies:
+    "@react-native-community/viewpager" "^5.0.11"
+    install "^0.13.0"
+    npm "^9.8.1"
 
 react-native-codegen@^0.71.3:
   version "0.71.3"
