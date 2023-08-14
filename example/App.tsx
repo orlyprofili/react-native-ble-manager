@@ -18,6 +18,7 @@ import {
   PermissionsAndroid,
   TouchableHighlight,
   Pressable,
+  FlatList,
 } from 'react-native';
 
 
@@ -444,6 +445,13 @@ const App = () => {
                 {'Retrieve connected peripherals'}
               </Text>
             </Pressable>
+
+            <FlatList
+              data={Array.from(peripherals.values())}
+              contentContainerStyle={{ rowGap: 12 }}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+            />
 
             {Array.from(peripherals.values()).length === 0 && (
               <View style={styles.row}>
