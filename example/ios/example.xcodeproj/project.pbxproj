@@ -433,6 +433,7 @@
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-example-exampleTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 6LTSZYZNG3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -450,6 +451,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = org.reactjs.native.example.org.reactjs.native.example.balls;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = org.reactjs.native.example.ballsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/example.app/example";
 			};
@@ -461,6 +464,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = 6LTSZYZNG3;
 				INFOPLIST_FILE = exampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -474,6 +478,8 @@
 					"$(inherited)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = org.reactjs.native.example.org.reactjs.native.example.balls;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = org.reactjs.native.example.ballsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/example.app/example";
 			};
