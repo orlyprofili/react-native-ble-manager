@@ -112,11 +112,11 @@ static bool hasListeners = NO;
         [self invokeAndClearDictionary:readDescriptorCallbacks withKey:key usingParameters:@[error, [NSNull null]]];
         return;
     }
-    NSLog(@"Read value [descriptor: %@, characteristic: %@]: (%lu) %@",
-            descriptor.UUID,
-            descriptor.characteristic.UUID,
-            [descriptor.value length],
-            descriptor.value);
+    //NSLog(@"Read value [descriptor: %@, characteristic: %@]: (%lu) %@",
+    //        descriptor.UUID,
+    //        descriptor.characteristic.UUID,
+    //        [descriptor.value length],
+    //        descriptor.value);
 
     NSMutableArray* peripheralReadDescriptorCallbacks = [readDescriptorCallbacks objectForKey:key];
     if (peripheralReadDescriptorCallbacks != NULL) {
